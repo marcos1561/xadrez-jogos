@@ -2,8 +2,8 @@ import numpy as np
 from functions import *
 
 # Número de elementos
-num_elementos = 6
-elementos = np.arange(num_elementos)
+num_el = 6
+elementos = np.arange(num_el)
 
 
 """Gera todas as duplas possíveis com os n elementos
@@ -25,37 +25,51 @@ for i in range(elementos.size):
 '''
 # Cria uma lista  com o número de rodadas que irão existir
 rodadas = []
-for i in range(num_elementos-1):
+for i in range(num_el-1):
     rodadas.append([])
 
-
-# Loop pelas duplas
 np.random.shuffle(duplas)
-for dupla in duplas:
-    # Separa os elementos da dupla
-    el_1 = dupla[:1]
-    el_2 = dupla[-1:]
+duplas_copia = list(duplas)
+for rodada in rodadas:
+    duplas_selec = []
+    el_selec = []
 
-    # Loop pelos rodadas
-    for rod_id in range(len(rodadas)):
-        # Variável que armazena se algum elemento da dupla está no subconjunto em questão
-        dupla_in = False
-        
-        # Verifica se algum elemnto da dupla já está no subconjunto em quenstão
-        # Caso estiver, quebra o loop
-        for rod_dupla in rodadas[rod_id]:      
-            if el_1 in rod_dupla or el_2 in rod_dupla:
-                dupla_in = True
+    dupla_ignore = []
+    for i in range(int(num_el/2)):
+        dupla_ignore.append([]) 
+
+    i = 0 
+    while i < len(duplas_copia):
+        dupla = duplas_copia[i]
+        if dupla not in dupla_ignore[len(duplas_selec)]:
+            el_1 = dupla[:1]
+            el_2 = dupla[-1:]
+            
+            el_selec = []
+            for item in duplas_selec:
+                [el_selec.append(el) for el in [item[:1], item[-1:]]]
+
+            if el_1 not in el_selec and el_2 not in el_selec:
+                duplas_selec.append(dupla)
+                
+                rodada.append(dupla)
+                
+                exibir_rodadas(rodadas, int(num_el/2), num_el)
+                print(f"{dupla}\n", "=-="*30)
+            
+            if len(rodada) == int(num_el/2):
                 break
-        
-        # Se a dupla não estiver na rodada em questão, adiciona ela ao mesmo
-        if not dupla_in:
-            rodadas[rod_id].append(dupla)
-            break
-    
-    exibir_rodadas(rodadas, int(num_elementos/2), num_elementos)
-    print(f"{dupla}\n", "=-="*30)
-    
-print(rodadas)
 
-        
+        i += 1
+        if i == len(duplas_copia):
+            
+            i = 0
+            dupla_ignore[len(duplas_selec)].append(duplas_selec[-1])
+            duplas_selec.pop(-1)
+            rodada.pop(-1)
+            
+
+    [duplas_copia.remove(dupla) for dupla in duplas_selec]
+
+verificar(rodadas, num_el)
+print(rodadas)     

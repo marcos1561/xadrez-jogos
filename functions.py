@@ -31,3 +31,46 @@ def exibir_rodadas(rodadas, max_duplas, long_el):
                 linha += "|".rjust(long_el_size*2 + 4)
 
         print(linha)
+
+
+def duplas_to_ignore(duplas_ignore, jogo_num):
+    list_index = []
+    
+    def return_list(lista, id):
+        return lista[id]
+
+    now_lista = duplas_ignore
+
+    for i in range(jogo_num):
+        now_lista = now_lista[i]
+        list_index.append(len(now_lista))
+    
+
+
+
+def verificar(rodadas, n):
+    duplas = []
+
+    for rodada in rodadas:
+        if len(rodada) != int(n/2):
+            print(f"Erro! Número de jogos na rodada.\n"
+                  f"Esperado {int(n/2)} jogos ao invés de {len(rodada)}.\n"
+                  f"Rodada: {rodada}\n")    
+
+        elementos = []
+        for dupla in rodada:
+            el_i = [dupla[:1], dupla[-1:]]
+            for el in el_i:
+                if el not in elementos:
+                    elementos.append(el)
+                else:
+                    print(f"Erro! Elemento repetido\n"
+                          f"Elemento: {el}\n"
+                          f"Rodada: {rodada}\n")
+            
+            if dupla not in duplas:
+                duplas.append(dupla)
+            else:
+                print(f"Erro! Dupla repetida\n"
+                      f"Dupla: {dupla}\n")
+
