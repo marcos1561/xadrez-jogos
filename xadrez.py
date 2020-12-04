@@ -34,14 +34,20 @@ for rodada in rodadas:
     duplas_selec = []
     el_selec = []
 
-    dupla_ignore = []
+    duplas_ignore = []
     for i in range(int(num_el/2)):
-        dupla_ignore.append([]) 
+        jogo_i_ignore = []
+        for j in range(i):
+            jogo_i_ignore.append([])
+        
+        duplas_ignore.append(jogo_i_ignore) 
 
     i = 0 
     while i < len(duplas_copia):
         dupla = duplas_copia[i]
-        if dupla not in dupla_ignore[len(duplas_selec)]:
+        
+        current_dupla_ignore = duplas_to_ignore(duplas_ignore, len(duplas_selec))
+        if dupla not in current_dupla_ignore:
             el_1 = dupla[:1]
             el_2 = dupla[-1:]
             
@@ -64,7 +70,9 @@ for rodada in rodadas:
         if i == len(duplas_copia):
             
             i = 0
-            dupla_ignore[len(duplas_selec)].append(duplas_selec[-1])
+            
+            
+
             duplas_selec.pop(-1)
             rodada.pop(-1)
             

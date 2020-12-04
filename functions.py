@@ -33,19 +33,24 @@ def exibir_rodadas(rodadas, max_duplas, long_el):
         print(linha)
 
 
-def duplas_to_ignore(duplas_ignore, jogo_num):
-    list_index = []
+def get_list_item(arr, arr_id):
+    for index in arr_id:
+        next_arr = arr[index]
+        arr = next_arr
     
-    def return_list(lista, id):
-        return lista[id]
+    return arr
 
-    now_lista = duplas_ignore
+
+def duplas_to_ignore(duplas_ignore, jogo_num):
+    arr_id = []
 
     for i in range(jogo_num):
-        now_lista = now_lista[i]
-        list_index.append(len(now_lista))
-    
+        arr_id[0] = i
+        next_id = len(get_list_item(duplas_ignore, arr_id))
+        arr_id.append(next_id)
 
+    arr_id[0] += 1
+    return get_list_item(duplas_ignore, arr_id)
 
 
 def verificar(rodadas, n):
