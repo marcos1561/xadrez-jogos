@@ -2,7 +2,7 @@ import numpy as np
 
 def exibir_rodadas(rodadas, max_duplas, long_el):
     """
-    Imprime no console o conjunto que possui as rodadas.
+    Imprime no console a lista que possui as rodadas.
 
     Parâmetros
     ----------
