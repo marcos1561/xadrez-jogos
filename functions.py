@@ -61,7 +61,32 @@ def get_list_item(arr, arr_id):
     return element_return
 
 
-def duplas_to_ignore(duplas_ignore, jogo_num):
+def duplas_to_ignore_id(duplas_ignore, jogo_num):
+    """
+    Retorna os índices de lista que contém as duplas que devem ser ignoradas no processo de tentar colar uma dupla na rodada.
+
+    Cada elemento da rodada possui listas de duplas para serem ignoradas (duplas, em que nessa posição, não permitem completar a rodada)
+    O primeiro elemento da rodada tem um lista 1-D contendo as duplas para ignorar, o segundo elemento uma lista 2-D, pois cada elemento dessa 
+    lista é uma lista que está associada aos elementos da lista do primeiro elemento da rodada, e assim sucessivamente.
+
+    Sabendo qual o índice da posição na rodada em que estamos tentando colocar o jogo, podemos calcular o comprimento das listas de duplas 
+    para ignorar dos índices acima, para assim, obter os índices da lista de duplas para ignorar do atual elemento da rodada.
+
+    Parâmetros
+    ----------
+    duplas_ignore: list
+        Lista contendo todas as listas com duplas para ignorar da atual rodada.
+
+    jogo_num: int
+        índice da posição na rodada em que o jogo está tentando ser colocado. Portanto, é o len() dos jogos que já foram colocados na rodada.  
+
+    Retorna
+    -------
+        arr_id: list 1-D
+            Lista contendo os índices da lista das duplas para serem ignoradas que está em "duplas_ignore".
+
+    """
+
     arr_id = [-1]
 
     for i in range(jogo_num):
@@ -74,14 +99,35 @@ def duplas_to_ignore(duplas_ignore, jogo_num):
 
 
 def duplas_update_shape(duplas_ignore, arr_id): 
+    """
+        Atualiza os shapes das listas que estão dentro de "duplas_ignore"
+
+        Sempre que no elemento de índice i de "duplas_ignore" é adicionado um item na lista com índica x nesse elemento, todos os elementos 
+        com índice > i devem ter seus shapes atualizados.
+        A única atualização necessária é adiconar um item na lista de índice x nos elementos de "duplas_ignore" com índice > i
+
+    
+        Parâmtros:
+        ----------
+        duplas_ignore: list
+            Lista contendo todas as listas com duplas para ignorar da atual rodada.
+
+        arr_id: list 1-D
+            Lista contendo os índices da lista de duplas para ignorar em que foi adicionado um elemento.
+
+    """ 
+
     jogo_num = arr_id[0]
     max_jogos = len(duplas_ignore)
 
     dim = 0
     for i in range(jogo_num+1, max_jogos):
+        # A dimensão do item que é adiconado no primeiro elemento de "duplas_ignore" com índice maior que arr_id[0]
+        # é 1, do segundo elemento é 2, e assim por diante.
         shape = [1 for _ in range(dim)] + [0]
         dim += 1 
         
+        # Pega a lista que é necessário adicionar um item e adicona o item
         arr_id[0] = i
         duplas_now = get_list_item(duplas_ignore, arr_id)
         duplas_now.append(np.empty(shape=shape).tolist())
