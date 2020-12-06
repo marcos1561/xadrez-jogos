@@ -11,7 +11,8 @@ elementos = np.arange(num_el)
 #Exibir rodada sendo preenchida no console?
 exibir_rod_console = True
 # Controlam a frequência da exibição da rodada no console
-contador = 0
+count_max = 50000
+
 
 """Gera todas as duplas possíveis com os n elementos
 
@@ -44,7 +45,6 @@ for i in range(num_el-1):
 # np.random.shuffle(duplas)
 duplas_copia = list(duplas)
 
-
 for rodada in rodadas:
     # Contém os elementos selecionados da rodada em questão
     el_selec = []
@@ -70,6 +70,7 @@ for rodada in rodadas:
     # Loop que preenche a rodada
     # Pega dupla por dupla e tenta colocar na rodada em questão
     i = 0 
+    contador = 0 # Contador que ativa a exibição das rodadas
     while i < len(duplas_copia):
         contador += 1
         dupla = duplas_copia[i]
@@ -100,7 +101,7 @@ for rodada in rodadas:
                     break
 
             # Exibe as rodadas como estão no momento, no console
-            if contador > 40000 and exibir_rod_console:
+            if contador > count_max and exibir_rod_console:
                 contador = 0
                 exibir_rodadas(rodadas, int(num_el/2), num_el)
                 print(f"Dupla atual: {dupla}\n", "=-="*30)
@@ -137,7 +138,6 @@ for rodada in rodadas:
 
     # Remove as duplas que foram colocadas na rodada, na lista que contém todos os jogos possíveis.
     [duplas_copia.remove(dupla) for dupla in rodada]
-
 
 end_time = time.time()
 exec_time = end_time - start_time
