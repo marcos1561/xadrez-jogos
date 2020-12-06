@@ -5,9 +5,13 @@ from functions import *
 start_time = time.time()
 
 # Número de elementos. OBS: Essa variável deve ser um número par.
-num_el = 6
+num_el = 26
 elementos = np.arange(num_el)
 
+#Exibir rodada sendo preenchida no console?
+exibir_rod_console = True
+# Controlam a frequência da exibição da rodada no console
+contador = 0
 
 """Gera todas as duplas possíveis com os n elementos
 
@@ -40,10 +44,6 @@ for i in range(num_el-1):
 # np.random.shuffle(duplas)
 duplas_copia = list(duplas)
 
-#Exibir rodada sendo preenchida no console?
-exibir_rod_console = False
-# Controlam a frequência da exibição da rodada no console
-contador = 0
 
 for rodada in rodadas:
     # Contém os elementos selecionados da rodada em questão
@@ -100,7 +100,7 @@ for rodada in rodadas:
                     break
 
             # Exibe as rodadas como estão no momento, no console
-            if contador > 150000 and exibir_rod_console:
+            if contador > 40000 and exibir_rod_console:
                 contador = 0
                 exibir_rodadas(rodadas, int(num_el/2), num_el)
                 print(f"Dupla atual: {dupla}\n", "=-="*30)
@@ -110,7 +110,15 @@ for rodada in rodadas:
         # Esse loop nunca deve chegar até o fim, caso isso aconteça é porque é impossível completara a rodada com as duplas restantes.
         # Portanto é retirado a última dupla da rodada e recomeçado o loop.
         if i == len(duplas_copia):
-            i = 0
+            # Calcula em qual ponto do loop se deve voltar para continuar preenchendo a rodada.
+            # Esse ponto deve ser o índice da dupla que está sendo removida mais 1.
+            # Como esse loop nunca deve acabar sem preencher a rodada, caso a dupla a ser removida seja a última na lista,
+            # o ponto no loop continua sendo o último ponto.
+            next_i = duplas_copia.index(rodada[-1]) + 1
+            if next_i == len(duplas_copia):
+                next_i = len(duplas_copia)-1
+
+            i = next_i
 
             # índice da lista que contém as duplas para ignorar em que será adiciona a última dupla da rodada em questão
             dpl_up_id = duplas_to_ignore_id(duplas_ignore, len(rodada)-1)
@@ -139,8 +147,8 @@ exibir_rodadas(rodadas, int(num_el/2),  num_el)
 #Verifica se existe algum erro nas rodasdas calculdas
 verificar(rodadas, num_el)
 # Tempo de execução
+print(f"Elementos: {num_el}|", end=" ")
 if exec_time > 60:
     print(f"{round(exec_time/60, 2)} minutos")
 else:
     print(f"{round(exec_time, 2)} segundos")
-
