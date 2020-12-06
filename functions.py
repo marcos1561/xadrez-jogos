@@ -68,3 +68,7 @@ def verificar(rodadas, n):
 
     if not error:
         print("Todas as rodadas estão corretas! :)")
+        return False
+    else:
+        return True
+
