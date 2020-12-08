@@ -1,20 +1,72 @@
 import numpy as np
 import time
+import json
 from functions import *
 
-def gerar_rodadas(num_el, show_rod, count_max):
-    # Número de elementos. OBS: Essa variável deve ser um número par.
-    elementos = np.arange(num_el)
-
-    """Gera todas as duplas possíveis com os n elementos
-
-        Consiste em pegar o elemnto i e formar duplas com os elementos moiores que i 
+def gerar_rodadas(num_el, show_rod, count_show_max, count_time_max, max_time, duplas_init):
     """
-    duplas = np.array([])
+        Gera as rodadas dodo um número de elementos
 
-    for i in range(elementos.size):
-        for j in range(i+1, elementos.size):
-            duplas = np.append(duplas, f"{i} X {j}")
+        Parâmetos:
+        ----------
+        num_el: int
+            número de elementos
+        
+        show_rod: bool
+            Controle se deve ser mostrado as rodadas durante a execução
+
+        count_show_max: int 
+            Controla a frêquancia de mostrar as rodadas durante a execução
+        
+        count_time_max: int
+            Controla a frêquancia de verificar o tempo execução
+
+        max_time: float
+            Tempo máximo de execução
+        
+        duplas_init: list
+            Lista com todas os jogos possíveis com um número de elemntos = num_el
+            Se não for desejado já iniciar como os jogos prontos deve ser passado
+            uma lista vazia.
+
+        Retorna
+        -------
+        int, items
+
+        O primeiro elemento do retorno pode ser o seguinte:
+            1 - Se atingir uma rodada impossívez de fazer
+            2 - Se atingir o tempo máximo de execução
+            3 - Se completar a execução
+
+        -Para os valores 1 e 2, o retorno é:
+            (1 ou 2), time_elapsed: float, duplas: list
+
+        Onde time_elapsed é o tempo de execução e duplas é lista com
+        todos os jogos possíveis
+
+        -Para o valor 3, o reterno é:
+            3, rodadas: list
+
+        Onde rodadas é a lista com todas as rodadas
+    """
+
+    start_time = time.time()
+    duplas = np.array([]) # Variável que irá conter todos os jogos possíveis
+
+    # If para caso já seja dado todos os jogos possíveis
+    if len(duplas_init) > 0:
+        duplas = duplas_init
+    else:
+        elementos = np.arange(num_el) # Número de elementos. OBS: Essa variável deve ser um número par.
+
+
+        """Gera todas as duplas possíveis com os n elementos
+
+            Consiste em pegar o elemnto i e formar duplas com os elementos moiores que i 
+        """
+        for i in range(elementos.size):
+            for j in range(i+1, elementos.size):
+                duplas = np.append(duplas, f"{i} X {j}")
 
 
     ''' Separa o conjunto das duplas em rodadas. 
@@ -26,25 +78,27 @@ def gerar_rodadas(num_el, show_rod, count_max):
         Caso chegue em um beco sem saída (impossível preencher o resto da rodada com as duplas restantes) desfaz a última dupla colocada na rodada 
         e continua com o mesmo processo.
 
-        OBS: O processo de desfazer a última ação, vai até o inicio da rodada, portanto se for ímpossivel formar uma rodada, um erro irá ocorrer,
-        no entendo, é conjecturado que a possibilidade disso acontecer cai dramasticamente com o número de elementos crescendo. 
+        OBS: O processo de desfazer a última ação, vai até o inicio da rodada, portanto se for ímpossivel formar uma rodada, um erro irá ocorrer.
+             Também é disparrado um erro se o tempo de execução ultrapassar um valor limite.
     '''
     # Cria uma lista com o número de rodadas que irão existir
     rodadas = []
-    for i in range(num_el-1):
+    for _ in range(num_el-1):
         rodadas.append([])
 
-    # np.random.shuffle(duplas)
+    # Aleatoriza o arranjo de duplas e gera uma copia
+    np.random.shuffle(duplas)
     duplas_copia = list(duplas)
 
+    count_show = 0 # Contador que ativa a exibição das rodadas
+    count_time = 0 # Contador que ativa a checagem do tempo
+    
     for rodada in rodadas:
-        # Contém os elementos selecionados da rodada em questão
-        el_selec = []
+        el_selec = [] # Contém os elementos selecionados da rodada em questão
 
         # Loop que preenche a rodada
         # Pega dupla por dupla e tenta colocar na rodada em questão
         i = 0 
-        contador = 0 # Contador que ativa a exibição das rodadas
         while i < len(duplas_copia):
             dupla = duplas_copia[i]
             
@@ -65,26 +119,36 @@ def gerar_rodadas(num_el, show_rod, count_max):
 
             # Exibe as rodadas como estão no momento, no console
             if show_rod:
-                contador += 1
-                if contador > count_max:
-                    contador = 0
+                count_show += 1
+                if count_show > count_show_max:
+                    count_show = 0
                     exibir_rodadas(rodadas, int(num_el/2), num_el)
                     print(f"Dupla atual: {dupla}\n", "=-="*30)
                 
             i += 1
 
             # Esse loop nunca deve chegar até o fim, caso isso aconteça é porque é impossível completara a rodada com as duplas restantes.
-            # Portanto é retirado a última dupla da rodada e recomeçado o loop.
+            # Portanto é retirado a última dupla da rodada e o loop volta açgumas duplas, para continuar preenchendo a rodada.
             if i == len(duplas_copia):
                 # Calcula em qual ponto do loop se deve voltar para continuar preenchendo a rodada.
                 # Esse ponto deve ser o índice da dupla que está sendo removida mais 1.
                 # Como esse loop nunca deve acabar sem preencher a rodada, caso a dupla a ser removida seja a última na lista,
-                # o ponto para retornar o loop é o índice da penúltima duplas na rodada mais 1 (OBS: Nessa caso a última e a
+                # o ponto para retornar o loop é o índice da penúltima duplas na rodada mais 1 (OBS: Nessa caso, a última e a
                 # penúltima duplas na rodada devem ser removidas. Uma é removida nesse if e a outra logo após)
                 next_i = duplas_copia.index(rodada[-1]) + 1
                 if next_i == len(duplas_copia):
                     del(el_selec[-2:])
                     rodada.pop(-1)
+
+                    # Caso a rodada fique vazia, é impossível formar uma rodada com as duplas restantes.
+                    # Portanto é retorndado as duplas (que será utilizando logo a seguir para reexecutar essa função),
+                    # o tempo decorrido e um código que informa qual foi o erro (nesse caso 1).
+                    if len(rodada) == 0:
+                        time_elapsed = round(time.time()-start_time,2)
+                        print(f"Rodada impossível | {time_elapsed} s")
+                        
+                        return 1, time_elapsed, duplas
+
                     next_i = duplas_copia.index(rodada[-1]) + 1
 
                 i = next_i
@@ -92,44 +156,85 @@ def gerar_rodadas(num_el, show_rod, count_max):
                 # Retira a última dupla da rodada e os dois últimos elementos de "el_selec"
                 del(el_selec[-2:]) 
                 rodada.pop(-1)
-            
+
+            count_time += 1
+            if count_time > count_time_max:
+                count_time = 0
+                time_now = time.time()
+                time_elapsed = time_now - start_time
+
+                # Se o tempo de execução ultrapassa o valor limite, o código termina, para, então, recomeçar com um
+                # novo arranjo aleatório para as duplas
+                if time_elapsed > max_time:
+                    print(f"Tempo máximo alcançado | {round(time_elapsed,2)} s")
+                    return 2, round(time_elapsed, 2), duplas
+
         # Remove as duplas que foram colocadas na rodada, na lista que contém todos os jogos possíveis.
         [duplas_copia.remove(dupla) for dupla in rodada]
 
-    return rodadas
+    return 3, rodadas
 
 
 # Número de elementos. OBS: Essa variável deve ser um número par.
-num_el_start = 0
-num_el_end = 20
+num_el_start = 45
+num_el_end = 40
 #Exibir rodada sendo preenchida no console?
 show_rod = False
 # Controlam a frequência da exibição da rodada no console
-count_max = 50000
+count_show_max = 50000
+# Controlam a frequência da verificação do tempo
+count_time_max = 50000
+# Função que calcula o tempo máximo de execução em função do número elementos
+def max_time_func(el):
+    return 1.51**(el-26.9)
 
 # Gera as rodadas com os parâmetros especificados acima
-rod_error = []
+rod_error = [] # Erros nas rodas são armazenaddos aqui
+time_list = [] # Contém os tempos de execução
 for num_el in range(num_el_start, num_el_end+1, 2):
-    print("#=-="*40)
+    time_list_el = [] # Tempos de execução das rodadas com um  número n de alementos.
+    for i in range(1):
+        print("#=-="*40)
+        
+        start_time = time.time()
+        
+        # Executa o código para gerar as rodadas até conseguir.
+        # Toda vez que ocorre algum erro, as duplas utilizadas na execução anterior são repassadas para a
+        # próxima execução, através da variável "duplas_init", para seu arranjo ser alterado.
+        duplas_init = []
+        while True:
+            rodadas = gerar_rodadas(num_el, show_rod, count_show_max, count_time_max, max_time_func(num_el), duplas_init)
+            if rodadas[0] == 3: # Caso não de erro, quebra esse loop e segue para o próximo número de elementos
+                rodadas = rodadas[-1]
+                break
+            else: # Se der erro, recomeça a execução com um novo arranjo para duplas.
+                duplas_init = rodadas[2]
+                time_list_el.append(rodadas[:2]) # Coloa o tempo de execução informando qual o erro ocorrido
+        
+        end_time = time.time()
 
-    start_time = time.time()
-    rodadas = gerar_rodadas(num_el, show_rod, count_max)
-    end_time = time.time()
+        # Exibe as rodadas
+        exibir_rodadas(rodadas, int(num_el/2), num_el)
+        
+        # Verifica se existe algum erro nas rodadas calculadas
+        if verificar(rodadas, num_el):
+            rod_error.append(num_el)
 
-    # Exibe as rodadas
-    exibir_rodadas(rodadas, int(num_el/2),  num_el)
-    # Verifica se existe algum erro nas rodasdas calculadas
-    if verificar(rodadas, num_el):
-        rod_error.append(num_el)
+        # Tempo de execução
+        exec_time = round((end_time - start_time), 2)
+        time_list_el.append((3, exec_time))
+        print(f"Elementos: {num_el}|", end=" ")
+        if exec_time > 60:
+            print(f"{round(exec_time/60, 2)} minutos")
+        else:
+            print(f"{round(exec_time, 2)} segundos")
 
-    # Tempo de execução
-    exec_time = end_time - start_time
-    print(f"Elementos: {num_el}|", end=" ")
-    if exec_time > 60:
-        print(f"{round(exec_time/60, 2)} minutos")
-    else:
-        print(f"{round(exec_time, 2)} segundos")
+    time_list.append((num_el, time_list_el))
 print("#=-="*40)
+
+# Salva todos os tempos no arquivo "tempos.json"
+# with open("tempos.json", "w") as f:
+#     json.dump(time_list, f)
 
 # Caso for detectado algum erro é avisado aqui
 if len(rod_error) > 0:
