@@ -190,9 +190,11 @@ def exibir_rodadas(rodadas, max_duplas, long_el):
 
     Retorna
     -------
-    None
-
+    rodadas_print: list
+        Lista contendo as rodadas no formato para escrever em um arquivo
     """
+
+    rodadas_print = []
     long_el_size = len(str(long_el))
     for i in range(max_duplas):
         linha = "|"
@@ -205,7 +207,10 @@ def exibir_rodadas(rodadas, max_duplas, long_el):
             else:
                 linha += "|".rjust(long_el_size*2 + 4)
 
+        rodadas_print.append(linha)
         print(linha)
+
+    return rodadas_print
 
 
 def verificar(rodadas, n):
