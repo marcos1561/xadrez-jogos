@@ -16,7 +16,7 @@ Nome_2
 Nome_3  
 Nome_4  
 
-OBS: Lembrando que a quantidade de jogadores deve ser par.
+OBS: Agora a quantidade de jogadores também pode ser ímpar, mas nesse caso o tempo de execução é bem maior.
 
 Então, apenas é necessário executar o seguinte comando no console, assumindo que você está na pasta do script.  
 
