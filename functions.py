@@ -55,7 +55,7 @@ def gerar_rodadas(num_el, show_rod, count_show_max, count_time_max, max_time, du
     if len(duplas_init) > 0:
         duplas = duplas_init
     else:
-        elementos = np.arange(num_el) # Número de elementos. OBS: Essa variável deve ser um número par.
+        elementos = np.arange(num_el) # Número de elementos
 
 
         """Gera todas as duplas possíveis com os n elementos
@@ -81,7 +81,10 @@ def gerar_rodadas(num_el, show_rod, count_show_max, count_time_max, max_time, du
     '''
     # Cria uma lista com o número de rodadas que irão existir
     rodadas = []
-    for _ in range(num_el-1):
+    # Se o número de elementos é par, o número de rodadas é o número de elementos menos 1, caso contrário,
+    # o número de rodadas é o próprio número de elementos.
+    num_rod = num_el-1 if num_el % 2 == 0 else num_el 
+    for _ in range(num_rod):
         rodadas.append([])
 
     # Aleatoriza o arranjo de duplas e gera uma copia
@@ -143,7 +146,7 @@ def gerar_rodadas(num_el, show_rod, count_show_max, count_time_max, max_time, du
                     # o tempo decorrido e um código que informa qual foi o erro (nesse caso 1).
                     if len(rodada) == 0:
                         time_elapsed = round(time.time()-start_time,2)
-                        print(f"Rodada impossível | {time_elapsed} s")
+                        # print(f"Rodada impossível | {time_elapsed} s")
                         
                         return 1, time_elapsed, duplas
 

@@ -6,10 +6,10 @@ from functions import gerar_rodadas, exibir_rodadas, verificar, tempo_execucao
     Este arquivo serve apenas para testes, "gerar_rodadas.py" é quem possui a usabilidade
 """
 
-# Número de elementos. OBS: Essa variável deve ser um número par.
-num_el_start = 0
+# Número de elementos. OBS: Essa variável pode ser um número ímpar.
+num_el_start = 1
 num_el_end = 30
-repeat_exec = 20 # Quantas vezes executar a geração de rodadas com n números de elementos
+repeat_exec = 5 # Quantas vezes executar a geração de rodadas com n números de elementos
 
 show_rod = False       # Exibir rodada sendo preenchida no console?
 count_show_max = 50000 # Controlam a frequência da exibição da rodada no console
@@ -45,7 +45,7 @@ for num_el in range(num_el_start, num_el_end+1, 2):
         end_time = time.time()
 
         # Exibe as rodadas
-        # exibir_rodadas(rodadas, int(num_el/2), num_el)
+        exibir_rodadas(rodadas, int(num_el/2), num_el)
         
         # Verifica se existe algum erro nas rodadas calculadas
         if verificar(rodadas, num_el):
