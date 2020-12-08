@@ -209,6 +209,29 @@ def exibir_rodadas(rodadas, max_duplas, long_el):
 
 
 def verificar(rodadas, n):
+    """
+        Verifica se existe algum problema nas rodadas
+        
+        Procura pelos seguintes erros:
+        - Elementos repetidos em cada rodada
+        - Dupla repetida nas rodadas
+        - Número incorreto de jogos na rodada
+
+        Parâmetros:
+        -----------
+            rodadas: list
+                Lista contendo as rodadas
+
+            n: int
+                número de elementos
+
+        Retorna:
+            bool
+
+            - False se nenhum erro foi encontrado.
+            - True se algum erro foi encontrado.
+
+    """
     error = False
     duplas = []
 
