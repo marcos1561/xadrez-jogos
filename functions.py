@@ -146,7 +146,7 @@ def gerar_rodadas(num_el, show_rod, count_show_max, count_time_max, max_time, du
                     # o tempo decorrido e um código que informa qual foi o erro (nesse caso 1).
                     if len(rodada) == 0:
                         time_elapsed = round(time.time()-start_time,2)
-                        # print(f"Rodada impossível | {time_elapsed} s")
+                        print(f"Rodada impossível | {time_elapsed} s")
                         
                         return 1, time_elapsed, duplas
 
