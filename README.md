@@ -1,6 +1,36 @@
 # xadrez-jogos
-Pequeno projeto para gerar partidas de xadrez, separadas em rodadas, em um conjunto de n jogadores
+Pequeno projeto para gerar partidas de xadrez, separadas em rodadas, em um conjunto de n jogadores.
 
-O objetivo do projeto e gerar todos os jogos possíveis dentre os n jogadores e separar esses jogos em rodadas, de tal forma que todos os jogadores jogam uma única vez por rodada
+O objetivo do projeto e gerar todos os jogos possíveis dentre os n jogadores e separar esses jogos em rodadas, de tal forma que todos os jogadores jogam uma única vez por rodada.
 
-OBS: Esse projeto não é exclusivo para xadrez, se aplica para qualquer jogo que seja 1 x 1.
+OBS: 
+* Esse projeto não é exclusivo para xadrez, se aplica para qualquer jogo que seja 1 x 1.  
+* O arquivo que possui usabilidade é "gerar_rodadas.py", o arquivo "xadrez.py" serve para testes.
+
+# Como usar
+
+O input aceitado é um arquivo .txt contendo os jogadores separados por linha. Ex:
+
+Nome_1  
+Nome_2  
+Nome_3  
+Nome_4  
+
+OBS: Lembrando que a quantidade de jogadores deve ser par.
+
+Então, apenas é necessário executar o seguinte comando no console, assumindo que você está na pasta do script.  
+
+- Powershell
+  ```powershell
+  Get-Content jogadores.txt | python gerar_rodadas.py
+  ```
+ - cmd
+    ```cmd
+    python gerar_rodadas.py < jogadores.txt 
+    ```
+
+Após a execução do script, será gerado, na pasta em que "gerar_rodadas.py" está, o arquivo "rodadas.txt" contendo as rodadas.  
+Um possível resultado para o arquivo exemplo é:
+
+|Nome_3 X Nome_2|Nome_3 X Nome_4|Nome_1 X Nome_3|  
+|Nome_1 X Nome_4|Nome_1 X Nome_2|Nome_4 X Nome_2|
