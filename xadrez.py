@@ -2,6 +2,10 @@ import time
 import json
 from functions import gerar_rodadas, exibir_rodadas, verificar, tempo_execucao
 
+"""
+    Este arquivo serve apenas para testes, "gerar_rodadas.py" é quem possui a usabilidade
+"""
+
 # Número de elementos. OBS: Essa variável deve ser um número par.
 num_el_start = 0
 num_el_end = 30
