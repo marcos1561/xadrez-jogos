@@ -173,9 +173,9 @@ def gerar_rodadas(num_el, show_rod, count_show_max, count_time_max, max_time, du
     return 3, rodadas
 
 
-def exibir_rodadas(rodadas, max_duplas, long_el):
+def exibir_rodadas(rodadas, max_duplas, long_el, show=True):
     """
-    Imprime no console a lista que possui as rodadas.
+    Gera um lista das rodadas que pode ser utlizada para escrever em um arquivo .txt
 
     Parâmetros
     ----------
@@ -187,6 +187,9 @@ def exibir_rodadas(rodadas, max_duplas, long_el):
     
     long_el: str
         Elemento nas rodadas com o maior número de caracteres
+
+    show: bool
+        Decide se é para imprimir as rodadas no console
 
     Retorna
     -------
@@ -208,7 +211,8 @@ def exibir_rodadas(rodadas, max_duplas, long_el):
                 linha += "|".rjust(long_el_size*2 + 4)
 
         rodadas_print.append(linha)
-        print(linha)
+        if show:
+            print(linha)
 
     return rodadas_print
 
