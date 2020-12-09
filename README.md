@@ -29,7 +29,7 @@ Então, apenas é necessário executar o seguinte comando no console, assumindo 
     python gerar_rodadas.py < jogadores.txt 
     ```
 
-Após a execução do script, será gerado, na pasta em que "gerar_rodadas.py" está, o arquivo "rodadas.txt" contendo as rodadas.  
+Após a execução do script, será gerado o arquivo "rodadas.txt" contendo as rodadas.  
 Um possível resultado para o arquivo exemplo é:
 
 |Nome_3 X Nome_2|Nome_3 X Nome_4|Nome_1 X Nome_3|  
