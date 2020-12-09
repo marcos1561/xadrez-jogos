@@ -5,10 +5,16 @@ O objetivo do projeto e gerar todos os jogos possíveis dentre os n jogadores e 
 
 OBS: 
 * Esse projeto não é exclusivo para xadrez, se aplica para qualquer jogo que seja 1 x 1.  
-* O arquivo que possui usabilidade é "gerar_rodadas.py", o arquivo "xadrez.py" serve para testes.
+* O arquivo que possui usabilidade é "gerar_rodadas.py", o arquivo "xadrez.py" serve para testes.  
+
+-> **Nos tutorias a seguir será pressuposto que o python está no PATH e que você está na pasta do repositório.**
+
+# Instalando dependências
+```powershell
+pip install -r requirements.txt
+```
 
 # Como usar
-
 O input aceitado é um arquivo .txt contendo os jogadores separados por linha. Ex:
 
 Nome_1  
@@ -16,9 +22,9 @@ Nome_2
 Nome_3  
 Nome_4  
 
-OBS: Lembrando que a quantidade de jogadores deve ser par.
+OBS: Agora a quantidade de jogadores também pode ser ímpar, mas nesse caso o tempo de execução é bem maior.
 
-Então, apenas é necessário executar o seguinte comando no console, assumindo que você está na pasta do script.  
+Então, apenas é necessário executar o seguinte comando no console.  
 
 - Powershell
   ```powershell
@@ -29,7 +35,7 @@ Então, apenas é necessário executar o seguinte comando no console, assumindo 
     python gerar_rodadas.py < jogadores.txt 
     ```
 
-Após a execução do script, será gerado, na pasta em que "gerar_rodadas.py" está, o arquivo "rodadas.txt" contendo as rodadas.  
+Após a execução do script, será gerado o arquivo "rodadas.txt" contendo as rodadas.  
 Um possível resultado para o arquivo exemplo é:
 
 |Nome_3 X Nome_2|Nome_3 X Nome_4|Nome_1 X Nome_3|  

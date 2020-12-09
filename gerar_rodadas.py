@@ -23,9 +23,11 @@ for line in sys.stdin:
 
 num_el = len(elementos) # número de jogadores
 
-show_rod = False       # Exibir rodada sendo preenchida no console?
-count_show_max = 50000 # Controlam a frequência da exibição da rodada no console
-count_time_max = 50000 # Controlam a frequência da verificação do tempo
+show_rod = False          # Exibir rodada sendo preenchida no console?
+freq_show_max = 50000     # Controlam a frequência da exibição da rodada no console
+freq_time_max = 50000     # Controlam a frequência da verificação do tempo
+num_time_streak = 6       # Número máximo para atingir o tempo máximo de execução
+max_time_multiplier = 1.7 # Quanto o tempo máximo é multiplicado quando "num_time_streak" é atingindo
 
 # Função que calcula o tempo máximo de execução em função do número elementos
 # Talvez no seu computar esses coeficientes não funcionem bem
@@ -36,13 +38,27 @@ def max_time_func(el):
 # Toda vez que ocorre algum erro, as duplas utilizadas na execução anterior são repassadas para a
 # próxima execução, através da variável "duplas_init", para seu arranjo ser alterado.
 duplas_init = []
+count_max_time = 0    # Número de vezes que o tempo máximo de execução foi atingido
+count_time_streak = 0 # Número de vezes que "num_time_streak" foi atingido
+
 while True:
-    result = func.gerar_rodadas(num_el, show_rod, count_show_max, count_show_max, max_time_func(num_el), duplas_init)
+    # Toda vez que é atingindo o tempo máximo de execução num_time_streak vezes seguidas, 
+    # aumenta o tempo máximo de execução em (max_time_multiplier - 1)*100 % 
+    if count_max_time >= num_time_streak:
+        count_max_time = 0
+        count_time_streak += 1
+    
+    max_time = max_time_func(num_el) * max_time_multiplier**(count_time_streak)
+    result = func.gerar_rodadas(num_el, show_rod, freq_show_max, freq_time_max, max_time, duplas_init)
 
     if result[0] == 3: # Caso não de erro, quebra o loop
         rodadas = result[-1]
         break
     else: # Se der erro, recomeça a execução com um novo arranjo para duplas.
+        # Conta quantas vezes é atingindo o tempo máximo de execução
+        if result[0] == 2: 
+            count_max_time += 1
+
         duplas_init = result[-1]
 
 func.verificar(rodadas, num_el) # Verifica se ocorreu algum erro
