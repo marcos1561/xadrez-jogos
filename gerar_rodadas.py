@@ -14,7 +14,7 @@ import functions as func
 elementos = [] # Lista contendo os jogadores
 long_el = ""   # Nome com maior número de caracteres
 for line in sys.stdin:
-    person = line.strip()
+    person = line.encode(sys.stdin.encoding).decode("UTF-8").strip()
     if len(person) > 0:
         elementos.append(person)
 
@@ -83,7 +83,7 @@ for rodada in rodadas:
 
 # Escreva as rodadas no arquivo "rodadas.txt"
 rodadas_lines = func.exibir_rodadas(rodadas, int(num_el/2), long_el, show=False)
-with open("rodadas.txt", "w") as file:
+with open("rodadas.txt", encoding="UTF-8", mode="w") as file:
     for line in rodadas_lines:
         file.write(line) 
         file.write("\n")
