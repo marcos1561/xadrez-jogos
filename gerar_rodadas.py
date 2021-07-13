@@ -13,13 +13,14 @@ import functions as func
 # Extrai os jogadores da arquivo com os mesmos e calcula qual jogador possui o maior nome (Utilizado para melhor exibir as rodadas)
 elementos = [] # Lista contendo os jogadores
 long_el = ""   # Nome com maior número de caracteres
-for line in sys.stdin:
-    person = line.encode(sys.stdin.encoding).decode("UTF-8").strip()
-    if len(person) > 0:
-        elementos.append(person)
+with open(sys.argv[1], "r", encoding="utf-8") as f:
+    for line in f:
+        person = line.strip()
+        if len(person) > 0:
+            elementos.append(person)
 
-        if len(person) > len(long_el):
-            long_el = person
+            if len(person) > len(long_el):
+                long_el = person
 
 num_el = len(elementos) # número de jogadores
 
