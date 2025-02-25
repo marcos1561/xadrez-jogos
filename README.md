@@ -1,4 +1,6 @@
 # xadrez-jogos
+> OBS: Este foi um dos primeiros projetos que criei, ele utiliza um algoritmo extremamente ineficiente e a organização dos códigos é estranha. Mantenho ele aqui por motivos históricos. 
+
 Pequeno projeto para gerar partidas de xadrez, separadas em rodadas, em um conjunto de n jogadores.
 
 O objetivo do projeto e gerar todos os jogos possíveis dentre os n jogadores e separar esses jogos em rodadas, de tal forma que todos os jogadores jogam uma única vez por rodada.
